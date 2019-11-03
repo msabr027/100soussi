@@ -1,7 +1,6 @@
 selenium
 BeautifulSoup4
 pandas
-time
 datetime
 schedule
 sqlalchemy

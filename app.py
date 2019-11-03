@@ -13,7 +13,7 @@ from datetime import date
 import schedule
 from sqlalchemy import create_engine
 
-driver = webdriver.Chrome(r"C:/Users/mosab/OneDrive/Desktop/chromedriver")
+driver = webdriver.Chrome("/app/chromedriver")
 
 def job():
     

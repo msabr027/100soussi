@@ -72,9 +72,9 @@ def job():
                                        'ZipCode':zipc,'Store':store,
                                        'Date':full_date})
             
-            full_data.append(full_data1)
+            full_data = full_data.append(full_data1)
         
-    full_data.to_sql(con=engine, name='circulaire', if_exists='append', index=False)
+            full_data.to_sql(con=engine, name='circulaire', if_exists='append', index=False)
     
 schedule.every().thursday.at("15:00").do(job) 
 

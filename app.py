@@ -4,20 +4,15 @@ Created on Wed Oct 30 14:46:05 2019
 
 @author: mosab
 """
-
 from selenium import webdriver
 from bs4  import BeautifulSoup
 import pandas as pd
 import time
 from datetime import date
 import schedule
-from sqlalchemy import create_engine
+import pymysql
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument('--headless')
-chrome_options.add_argument('--no-sandbox')
-chrome_options.add_argument('--disable-dev-shm-usage')
-driver = webdriver.Chrome("/app/chromedriver",chrome_options=chrome_options)
+driver = webdriver.Chrome(r"C:/Users/Administrator/Desktop/chromedriver")
 
 def job():
     
@@ -29,12 +24,17 @@ def job():
     price=[]
     store=[]
     zipc=[]
-    full_data= pd.DataFrame(columns=['Product', 'Price', 'ZipCode','Store','Date'])
     
-    engine = create_engine('mysql://root:6551322Kl@35.239.36.251/dbextract')
+    
+    connection = pymysql.connect(host='35.239.36.251',
+                         user='root',
+                         password='6551322Kl',
+                         db='dbextract')
+    cursor=connection.cursor()
 
     for c in magasins:
         for d in postal:
+            full_data= pd.DataFrame(columns=['Product', 'Price', 'ZipCode','Store','Date'])
             lienc= "https://flipp.com/fr-ca/-/circulaire/"+c+"-circulaire?postal_code="+d
             driver.get(lienc)
             time.sleep(7)
@@ -67,14 +67,21 @@ def job():
                             zipc.append(d)
                             store.append(c)
                             full_date.append(date_time)
-                
+                            
+            price = [0 if x=='' else x for x in price]
+            
             full_data1 = pd.DataFrame({'Product':name,'Price':price,
                                        'ZipCode':zipc,'Store':store,
                                        'Date':full_date})
             
             full_data = full_data.append(full_data1)
-        
-            full_data.to_sql(con=engine, name='circulaire', if_exists='append', index=False)
+                    
+            cols = "`,`".join([str(i) for i in full_data.columns.tolist()])
+
+            for i,row in full_data.iterrows():
+                sql = "INSERT INTO `circulaire` (`" +cols + "`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
+                cursor.execute(sql, tuple(row))
+                connection.commit()
     
 schedule.every().thursday.at("15:00").do(job) 
 

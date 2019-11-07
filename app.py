@@ -21,7 +21,7 @@ driver = webdriver.Chrome("/app/chromedriver",chrome_options=chrome_options)
 def job():
     
     print('the scraping job has started for 100soussi...flipp data')
-    postal=['H2C0A0','H2A0A0','H1J0A0','H1P0A0','H1W0A0','H1X0A0','H2H0A0','H3N0A0','H3S0A0','H4C0A0','H4R0A0','H4W0A0','H7N0A0','H8S0A0','H8Z0A0','H9J0A0','H9B0A0','H9R0A0']
+    postal=['H2C0A0']
     magasins = ['3062050-walmart', '3051581-marche-bonichoix','3068312-les-marches-tradition','3072762-iga-quebec-et-nouveaubrunswick','3056575-marche-richelieu','3061982-super-c','3069103-marche-adonis','3063795-provigo','3065316-maxi']        
     date_time = date.today().strftime("%Y/%m/%d")
     full_date=[]
@@ -88,7 +88,7 @@ def job():
                 cursor.execute(sql, tuple(row))
                 connection.commit()
     
-schedule.every().thursday.at("21:33").do(job) 
+schedule.every().thursday.at("22:13").do(job) 
 
 while 1:
     schedule.run_pending()

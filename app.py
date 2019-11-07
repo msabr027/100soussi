@@ -12,7 +12,11 @@ from datetime import date
 import schedule
 import pymysql
 
-driver = webdriver.Chrome("/app/chromedriver")
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+driver = webdriver.Chrome("/app/chromedriver",chrome_options=chrome_options)
 
 def job():
     
@@ -83,7 +87,7 @@ def job():
                 cursor.execute(sql, tuple(row))
                 connection.commit()
     
-schedule.every().thursday.at("15:35").do(job) 
+schedule.every().thursday.at("15:40").do(job) 
 
 while 1:
     schedule.run_pending()

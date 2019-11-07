@@ -44,7 +44,7 @@ def job():
             driver.get(lienc)
             time.sleep(7)
             content = driver.page_source
-            soup = BeautifulSoup(content)
+            soup = BeautifulSoup(content,'html.parser')
             links=[]
             for a in soup.findAll('a',href=True, attrs={'class':'item-container'}):
                 link1=a['href']

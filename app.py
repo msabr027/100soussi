@@ -12,7 +12,7 @@ from datetime import date
 import schedule
 import pymysql
 
-driver = webdriver.Chrome(r"C:/Users/Administrator/Desktop/chromedriver")
+driver = webdriver.Chrome("/app/chromedriver")
 
 def job():
     
@@ -83,7 +83,7 @@ def job():
                 cursor.execute(sql, tuple(row))
                 connection.commit()
     
-schedule.every().thursday.at("15:00").do(job) 
+schedule.every().thursday.at("15:35").do(job) 
 
 while 1:
     schedule.run_pending()
